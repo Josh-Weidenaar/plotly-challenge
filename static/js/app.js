@@ -9,7 +9,7 @@ function init(input){
 
         initDropdown(data)
 
-        console.log(data)
+        // console.log(data)
         
         plotBar(data.samples);
   });
@@ -26,10 +26,10 @@ function optionChanged(){
 
         //data accessible
         //maybe use restyle
-        console.log(data);
-        console.log(bubble);
-        console.log(gauge);
-        console.log(bar);
+        // console.log(data);
+        // console.log(bubble);
+        // console.log(gauge);
+        // console.log(bar);
   });
     
   //data not accessible
@@ -44,7 +44,7 @@ function initDropdown(i) {
 
     var dropdown = d3.select("#selDataset");
     var unique = {};
-    
+
     i.names.forEach(function(name) {
         
         if (typeof unique[name] == "undefined") {
@@ -63,9 +63,19 @@ function plotBar(i){
         var labels = j.otu_ids;
         var values = j.sample_values;
         var hovertext = j.otu_labels;
-        // console.log(labels);
+        values.sort(function(a, b){return b-a});
+        console.log(values.slice(0,10));
         // console.log(hovertext);
         // console.log(values);
+        var data = [{
+            type: 'bar',
+            x: values.slice(0,10),
+            y: labels.slice(0,10),
+            orientation: 'h'
+        }];
+
+        Plotly.newPlot('bar',data);
+
 
     });
 }
