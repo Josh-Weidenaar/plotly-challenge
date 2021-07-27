@@ -119,6 +119,18 @@ function plotBubble(i){
 
 function loadMetadata(i) {
     
+    var metadata = d3.select("#sample-metadata");
+    
+    metadata.append("ul");
+
+    var unorderedList = d3.select("ul")
+    console.log(unorderedList)
+    Object.entries(i).forEach(function([key,value]) {
+        var listItem = unorderedList.append("li") 
+        listItem.text(key.toUpperCase() + ":   " + value)
+      });
+    
+
 };
 
 function filterData(i) {
