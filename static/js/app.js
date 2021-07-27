@@ -13,6 +13,8 @@ function init(input){
         var filtered = filterData(data)
         console.log(filtered);
         plotBar(filtered[0][0]);
+        plotBubble(filtered[0][0]);
+        loadMetadata(filtered[2][0]);
   });
   
   //data not accessible
@@ -77,10 +79,47 @@ function plotBar(i){
         text: hovertext.slice(0,10),
         orientation: 'h'
     }];
+   
+    var layout = {
+        title: 'Top 10 Most Concentrated Cultures'};
 
-    Plotly.newPlot('bar',data);
+    Plotly.newPlot('bar',data, layout);
 
-}
+};
+
+function plotBubble(i){
+
+        
+    var ids = i.otu_ids;
+    var values = i.sample_values;
+    var labels = i.otu_labels;
+    values.sort(function(a, b){return b-a});
+    
+    // var labels = labels.map(i => {
+    //     return "OTU " + String(i);
+    // })
+    // console.log(hovertext);
+    // console.log(values);
+    var data = [{
+        mode: 'markers',
+        x: ids,
+        y: values,
+        text: labels,
+        marker: {
+            color: ids,
+            size: values
+        }
+    }];
+    var layout = {
+        title: 'Cultures per Sample'};
+
+    Plotly.newPlot('bubble',data, layout);
+
+};
+
+function loadMetadata(i) {
+    
+};
 
 function filterData(i) {
     let id = "940";
