@@ -10,8 +10,9 @@ function init(input){
         initDropdown(data)
 
         // console.log(data)
-        
-        plotBar(data.samples);
+        var filtered = filterData(data)
+        console.log(filtered);
+        plotBar(filtered[0][0]);
   });
   
   //data not accessible
@@ -58,27 +59,38 @@ function initDropdown(i) {
 
 
 function plotBar(i){
-    i.forEach(function(j) {
+
         
-        var labels = j.otu_ids;
-        var values = j.sample_values;
-        var hovertext = j.otu_labels;
-        values.sort(function(a, b){return b-a});
-        console.log(values.slice(0,10));
-        // console.log(hovertext);
-        // console.log(values);
-        var data = [{
-            type: 'bar',
-            x: values.slice(0,10),
-            y: labels.slice(0,10),
-            orientation: 'h'
-        }];
+    var labels = i.otu_ids.slice(0,10);
+    var values = i.sample_values;
+    var hovertext = i.otu_labels;
+    values.sort(function(a, b){return b-a});
+    var labels = labels.map(i => {
+        return "OTU " + String(i);
+    })
+    // console.log(hovertext);
+    // console.log(values);
+    var data = [{
+        type: 'bar',
+        x: values.slice(0,10),
+        y: labels,
+        text: hovertext.slice(0,10),
+        orientation: 'h'
+    }];
 
-        Plotly.newPlot('bar',data);
+    Plotly.newPlot('bar',data);
 
-
-    });
 }
+
+function filterData(i) {
+    let id = "940";
+    var samples = i.samples.filter(j => j.id === id);
+    var names = i.names.filter(j => j === id);
+    var metadata = i.metadata.filter(j => j.id === parseInt(id));
+
+    return [samples, names, metadata];
+};
+
 
 init()  // enacted on page load only
 
