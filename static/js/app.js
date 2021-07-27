@@ -23,16 +23,15 @@ function init(input){
 
 
 
-function optionChanged(){
+function optionChanged(i){
 
     d3.json(data).then(function(data) {
 
-        //data accessible
-        //maybe use restyle
-        // console.log(data);
-        // console.log(bubble);
-        // console.log(gauge);
-        // console.log(bar);
+        var filtered = filterData(data,i)
+        console.log(filtered);
+        plotBar(filtered[0][0]);
+        plotBubble(filtered[0][0]);
+        loadMetadata(filtered[2][0]);
   });
     
   //data not accessible
@@ -118,7 +117,7 @@ function plotBubble(i){
 };
 
 function loadMetadata(i) {
-    
+    d3.select("ul").remove();
     var metadata = d3.select("#sample-metadata");
     
     metadata.append("ul");
@@ -133,12 +132,18 @@ function loadMetadata(i) {
 
 };
 
-function filterData(i) {
-    let id = "940";
-    var samples = i.samples.filter(j => j.id === id);
-    var names = i.names.filter(j => j === id);
-    var metadata = i.metadata.filter(j => j.id === parseInt(id));
-
+function filterData(i, k) {
+    if (!k) {   
+        let id = "940";
+        var samples = i.samples.filter(j => j.id === id);
+        var names = i.names.filter(j => j === id);
+        var metadata = i.metadata.filter(j => j.id === parseInt(id));
+    }   else if (k) {
+        let id = k;
+        var samples = i.samples.filter(j => j.id === id);
+        var names = i.names.filter(j => j === id);
+        var metadata = i.metadata.filter(j => j.id === parseInt(id));
+    }
     return [samples, names, metadata];
 };
 
